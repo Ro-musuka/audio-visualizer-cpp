@@ -15,6 +15,11 @@ public:
     // ゲッター/セッター
     const SDL_AudioStream *GetAudioStream() const { return mAudioStream; }
 
+    int GetChannels() const { return mSpec.channels; }
+    int GetFreq() const { return mSpec.freq; }
+    Uint8 *GetBuffer() const { return mBuffer; }
+    Uint32 GetLength() const { return mLength; }
+
     float GetDuration() const { return mDuration; }
     void SetProgress(float progress);
     float GetStartTime() { return mStartTime; }

@@ -1,60 +1,66 @@
 #include "FFT.h"
 
-#include <SDL3/SDL.h>
-#include "../external/kissfft/kiss_fft.h"
+#include <stdio.h>
 
-#include <cstdlib>
-#include <vector>
+#include "Application.h"
+#include "AudioPlayer.h"
+#include "Renderer.h"
+#include "GUI.h"
 
-FFT::FFT()
+FFT::FFT(Application *app)
+    : mApplication(app),
+      mSpectrum(FFT_SIZE / 2),
+      mCfg(nullptr)
 {
+    mPcm = reinterpret_cast<int16_t *>(mApplication->GetAudioPlayer()->GetBuffer());
+
+    mCfg = kiss_fft_alloc(FFT_SIZE, 0, nullptr, nullptr);
+
+    mSpectrum.resize(FFT_SIZE / 2);
 }
 
-void FFT::Update(float deltaTime)
+FFT::~FFT()
 {
-    // 16bit PCMとして扱う
-    int16_t *pcm = reinterpret_cast<int16_t *>(buffer);
-    int sampleCount = length / sizeof(int16_t);
+    free(mCfg);
+}
 
-    // floatへ変換
-    std::vector<float> samples(sampleCount);
+void FFT::Update()
+{
+    float currentTime = mApplication->GetRenderer()->GetGUI()->GetCurrentTime();
+    int freq = mApplication->GetAudioPlayer()->GetFreq();
+    int channels = mApplication->GetAudioPlayer()->GetChannels();
 
-    for (int i = 0; i < sampleCount; i++)
+    if (mApplication->GetAudioPlayer()->GetDuration() <= currentTime + FFT_SIZE / static_cast<float>(freq))
     {
-        samples[i] = pcm[i] / 32768.0f;
+        return;
     }
 
-    // kissFFT初期化
-    kiss_fft_cfg cfg = kiss_fft_alloc(FFT_SIZE, 0, nullptr, nullptr);
-
-    kiss_fft_cpx in[FFT_SIZE];
-    kiss_fft_cpx out[FFT_SIZE];
+    int currentFrame = static_cast<int>(currentTime * freq);
+    int currentSample = currentFrame * channels;
 
     // 最初の1024サンプルを解析
     for (int i = 0; i < FFT_SIZE; i++)
     {
+        int index = currentSample + i * channels;
+        float sample = (mPcm[index] + mPcm[index + 1]) * 0.5f / 32768.0f;
+
         float window = 0.5f * (1.0f - cosf(2.0f * M_PI * i / (FFT_SIZE - 1)));
 
-        in[i].r = samples[i] * window;
-        in[i].i = 0.0f;
+        mInput[i].r = sample * window;
+        mInput[i].i = 0.0f;
     }
 
     // FFT
-    kiss_fft(cfg, in, out);
-
-    // 振幅計算
-    std::vector<float> spectrum(FFT_SIZE / 2);
+    kiss_fft(mCfg, mInput, mOutput);
 
     for (int i = 0; i < FFT_SIZE / 2; i++)
     {
-        spectrum[i] = sqrtf(
-            out[i].r * out[i].r +
-            out[i].i * out[i].i);
+        mSpectrum[i] = sqrtf(mOutput[i].r * mOutput[i].r + mOutput[i].i * mOutput[i].i);
     }
 
     // 結果表示
     for (int i = 0; i < 20; i++)
     {
-        SDL_Log("%d: %f\n", i, spectrum[i]);
+        printf("%d: %f\n", i, mSpectrum[i]);
     }
 }

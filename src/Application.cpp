@@ -6,7 +6,7 @@
 #include "GUI.h"
 #include "Wave.h"
 #include "AudioPlayer.h"
-// #include "FFT.h"
+#include "FFT.h"
 
 Application::Application()
     : mIsRunning(true),
@@ -37,6 +37,8 @@ bool Application::Init(const char *fileName)
         SDL_Log("オーディオシステムが初期化できませんでした");
         return false;
     }
+
+    mFFT = new FFT(this);
 
     mRenderer->GetGUI()->SetDuration(mAudioPlayer->GetDuration());
 
@@ -86,6 +88,8 @@ void Application::Update()
         mAudioPlayer->SetIsPused(true);
     }
     mAudioPlayer->Play();
+
+    mFFT->Update();
 }
 
 void Application::Output()
@@ -97,6 +101,6 @@ void Application::Shutdown()
 {
     mRenderer->Shutdown();
     delete mRenderer;
-
     delete mAudioPlayer;
+    delete mFFT;
 }

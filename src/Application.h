@@ -25,5 +25,5 @@ private:
     // 描画処理
     class Renderer *mRenderer;
     // フーリエ変換
-    // class FFT *mFFT;
+    class FFT *mFFT;
 };

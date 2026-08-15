@@ -69,6 +69,27 @@ void Application::Input()
         }
         mRenderer->GetGUI()->ProcessEvent(event);
     }
+
+    const bool *keystate = SDL_GetKeyboardState(NULL);
+    if (keystate[SDL_SCANCODE_ESCAPE])
+    {
+        mIsRunning = false;
+    }
+    if (keystate[SDL_SCANCODE_A])
+    {
+        if (mAudioPlayer->GetIsPaused() &&
+            mAudioPlayer->GetDuration() >= mRenderer->GetGUI()->GetCurrentTime())
+        {
+            mAudioPlayer->IsPlaying();
+        }
+    }
+    if (keystate[SDL_SCANCODE_S])
+    {
+        if (!mAudioPlayer->GetIsPaused())
+        {
+            mAudioPlayer->IsPused();
+        }
+    }
 }
 
 void Application::Update()
@@ -83,7 +104,7 @@ void Application::Update()
     mRenderer->Update(deltaTime);
     if (mAudioPlayer->GetDuration() <= mRenderer->GetGUI()->GetCurrentTime())
     {
-        mAudioPlayer->SetIsPused(true);
+        mAudioPlayer->IsPused();
     }
     mAudioPlayer->Play();
 

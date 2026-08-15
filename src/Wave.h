@@ -4,12 +4,18 @@
 
 class Wave
 {
-    /*
 public:
-    Wave();
+    Wave(class Renderer *renderer);
+    ~Wave();
+
+    bool Init();
+    void Draw();
 
 private:
-    class Application *mApplication;
-    SDL_GLContext mContext;
-    */
+    GLuint mVAO;
+    GLuint mVBO;
+    GLuint mEBO;
+    GLuint mShader;
+
+    class Renderer *mRenderer;
 };

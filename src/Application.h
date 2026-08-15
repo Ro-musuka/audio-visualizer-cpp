@@ -11,6 +11,7 @@ public:
 
     class AudioPlayer *GetAudioPlayer() const { return mAudioPlayer; }
     class Renderer *GetRenderer() const { return mRenderer; }
+    class FFT *GetFFT() const { return mFFT; }
 
 private:
     void Input();

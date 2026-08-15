@@ -7,7 +7,7 @@
 AudioPlayer::AudioPlayer(Application *app)
     : mDuration(0.0f),
       mStartTime(0.0f),
-      mIsPused(true),
+      mIsPaused(true),
       mIsPusedPrevious(true),
       mApplication(app)
 {
@@ -43,15 +43,18 @@ bool AudioPlayer::Init(const char *musicFile)
     //  総フレーム数 / Hz で再生時間を求める
     mDuration = static_cast<float>(totalFrames) / mSpec.freq;
 
+    SDL_PutAudioStreamData(mAudioStream, mBuffer, mLength);
+    SDL_PauseAudioDevice(mDeviceID);
+
     return true;
 }
 
 void AudioPlayer::Play()
 {
-    if (mIsPusedPrevious == mIsPused)
+    if (mIsPusedPrevious == mIsPaused)
         return;
 
-    if (mIsPused)
+    if (mIsPaused)
     {
         Pause();
     }
@@ -60,7 +63,7 @@ void AudioPlayer::Play()
         Resume();
     }
 
-    mIsPusedPrevious = mIsPused;
+    mIsPusedPrevious = mIsPaused;
 }
 
 void AudioPlayer::SetProgress(float progress)
@@ -78,7 +81,7 @@ void AudioPlayer::SetProgress(float progress)
         mStartTime = static_cast<float>(frames) / mSpec.freq;
     }
 
-    mIsPused = false;
+    mIsPaused = false;
 }
 
 void AudioPlayer::Resume()

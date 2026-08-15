@@ -56,7 +56,7 @@ void GUI::ProcessEvent(SDL_Event event)
 
 void GUI::Update(float deltaTime)
 {
-    if (!mRenderer->GetApplication()->GetAudioPlayer()->IsPused())
+    if (!mRenderer->GetApplication()->GetAudioPlayer()->GetIsPaused())
     {
         mCurrentTime += deltaTime;
     }

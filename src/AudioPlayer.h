@@ -24,8 +24,9 @@ public:
     void SetProgress(float progress);
     float GetStartTime() { return mStartTime; }
 
-    bool IsPused() const { return mIsPused; }
-    void SetIsPused(bool state) { mIsPused = state; }
+    bool GetIsPaused() const { return mIsPaused; }
+    void IsPused() { mIsPaused = true; }
+    void IsPlaying() { mIsPaused = false; }
 
 private:
     void Resume();
@@ -42,7 +43,7 @@ private:
     float mDuration;
     float mStartTime;
 
-    bool mIsPused;
+    bool mIsPaused;
     bool mIsPusedPrevious;
 
     class Application *mApplication;

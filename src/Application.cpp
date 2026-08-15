@@ -69,8 +69,6 @@ void Application::Input()
         }
         mRenderer->GetGUI()->ProcessEvent(event);
     }
-
-    mRenderer->GetGUI()->Input();
 }
 
 void Application::Update()

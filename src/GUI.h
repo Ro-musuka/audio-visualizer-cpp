@@ -16,7 +16,6 @@ public:
     bool Init();
 
     void ProcessEvent(SDL_Event event);
-    void Input();
     void Update(float deltaTime);
     void Draw();
 
@@ -31,6 +30,8 @@ public:
 
 private:
     const float mThickness = 40.0f;
+    float mScreenWidth;
+    float mScreenHeight;
 
     float mBarWidth;
     float mBarHeight;

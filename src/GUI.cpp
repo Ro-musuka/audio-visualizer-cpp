@@ -12,9 +12,10 @@
 GUI::GUI(Renderer *renderer)
     : mRenderer(renderer),
       mProgress(0.0f),
-
       mIsBarDragging(false)
 {
+    mScreenWidth = mRenderer->GetScreenWidth();
+    mScreenHeight = mRenderer->GetScreenHeight();
 }
 
 GUI::~GUI()
@@ -45,10 +46,12 @@ bool GUI::Init()
 void GUI::ProcessEvent(SDL_Event event)
 {
     ImGui_ImplSDL3_ProcessEvent(&event);
-}
 
-void GUI::Input()
-{
+    if (event.type == SDL_EVENT_WINDOW_RESIZED)
+    {
+        mScreenWidth = event.window.data1;
+        mScreenHeight = event.window.data2;
+    }
 }
 
 void GUI::Update(float deltaTime)
@@ -77,9 +80,9 @@ void GUI::Draw()
     ImGui::NewFrame();
 
     // 位置
-    ImGui::SetNextWindowPos(ImVec2(0, mRenderer->GetScreenHeight() - mThickness), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(0, mScreenHeight - mThickness), ImGuiCond_Always);
     // サイズ
-    ImGui::SetNextWindowSize(ImVec2(mRenderer->GetScreenWidth(), mThickness), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(mScreenWidth, mThickness), ImGuiCond_Always);
 
     // ウィンドウ作成
     // サイズ・位置変更不可、titleBarなし
@@ -134,7 +137,7 @@ void GUI::Draw()
     int currentTime = static_cast<int>(mCurrentTime);
 
     // min:sec を出力
-    ImGui::Text(" %d:%02d / %d:%02d  %f", currentTime / 60, currentTime % 60, duration / 60, duration % 60, mProgress);
+    ImGui::Text(" %d:%02d / %d:%02d", currentTime / 60, currentTime % 60, duration / 60, duration % 60);
 
     ImGui::End();
 

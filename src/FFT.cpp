@@ -57,10 +57,4 @@ void FFT::Update()
     {
         mSpectrum[i] = sqrtf(mOutput[i].r * mOutput[i].r + mOutput[i].i * mOutput[i].i);
     }
-
-    // 結果表示
-    for (int i = 0; i < 20; i++)
-    {
-        printf("%d: %f\n", i, mSpectrum[i]);
-    }
 }

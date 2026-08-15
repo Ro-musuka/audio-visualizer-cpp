@@ -6,10 +6,11 @@
 
 Renderer::Renderer(Application *app)
     : mApplication(app),
-      mScreenWidth(480.0f),
-      mScreenHeight(270.0f)
+      mScreenWidth(800.0f),
+      mScreenHeight(450.0f)
 {
     mGUI = new GUI(this);
+    mWave = new Wave(this);
 }
 
 bool Renderer::Init()
@@ -68,6 +69,12 @@ bool Renderer::Init()
         return false;
     }
 
+    if (!mWave->Init())
+    {
+        SDL_Log("波形の作成に失敗しました");
+        return false;
+    }
+
     return true;
 }
 
@@ -78,10 +85,11 @@ void Renderer::Update(float deltaTime)
 
 void Renderer::Draw()
 {
-    glClearColor(1.0f, 0.6f, 0.8f, 1.0f);
+    glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mGUI->Draw();
+    mWave->Draw();
 
     SDL_GL_SwapWindow(mWindow);
 }
@@ -89,6 +97,7 @@ void Renderer::Draw()
 void Renderer::Shutdown()
 {
     delete mGUI;
+    delete mWave;
 
     SDL_GL_DestroyContext(mContext);
     SDL_DestroyWindow(mWindow);

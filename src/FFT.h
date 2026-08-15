@@ -14,6 +14,8 @@ public:
 
     void Update();
 
+    const std::vector<float> &GetSpectrum() { return mSpectrum; }
+
 private:
     int16_t *mPcm;
 

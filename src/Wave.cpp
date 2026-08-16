@@ -122,7 +122,7 @@ void Wave::Draw()
 
     int count = 512;
     float width = screenWidth / count;
-    float height = mRenderer->GetScreenHeight() / 2;
+    float height = mRenderer->GetGUI()->GetThickness();
 
     std::vector<float> vertices;
 
@@ -134,7 +134,7 @@ void Wave::Draw()
 
         float y0 = height;
         float magnitude = std::max(spectrum[i], 1e-6f);
-        float y1 = height + 20 * log10(magnitude);
+        float y1 = height + std::fabs(60 * log10(magnitude));
 
         // NDC変換 (-1.0 ~ 1.0)
         float nx0 = (x0 / screenWidth) * 2.0f - 1.0f;

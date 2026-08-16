@@ -25,7 +25,7 @@ public:
     float GetStartTime() { return mStartTime; }
 
     bool GetIsPaused() const { return mIsPaused; }
-    void IsPused() { mIsPaused = true; }
+    void IsPaused() { mIsPaused = true; }
     void IsPlaying() { mIsPaused = false; }
 
 private:

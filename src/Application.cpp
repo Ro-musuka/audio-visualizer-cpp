@@ -87,7 +87,7 @@ void Application::Input()
     {
         if (!mAudioPlayer->GetIsPaused())
         {
-            mAudioPlayer->IsPused();
+            mAudioPlayer->IsPaused();
         }
     }
 }
@@ -104,7 +104,7 @@ void Application::Update()
     mRenderer->Update(deltaTime);
     if (mAudioPlayer->GetDuration() <= mRenderer->GetGUI()->GetCurrentTime())
     {
-        mAudioPlayer->IsPused();
+        mAudioPlayer->IsPaused();
     }
     mAudioPlayer->Play();
 

@@ -9,7 +9,6 @@
 
 FFT::FFT(Application *app)
     : mApplication(app),
-      mSpectrum(FFT_SIZE / 2),
       mCfg(nullptr)
 {
     mPcm = reinterpret_cast<int16_t *>(mApplication->GetAudioPlayer()->GetBuffer());
@@ -55,6 +54,7 @@ void FFT::Update()
 
     for (int i = 0; i < FFT_SIZE / 2; i++)
     {
-        mSpectrum[i] = sqrtf(mOutput[i].r * mOutput[i].r + mOutput[i].i * mOutput[i].i);
+        float magnitude = sqrtf(mOutput[i].r * mOutput[i].r + mOutput[i].i * mOutput[i].i);
+        mSpectrum[i] += (magnitude - mSpectrum[i]) * 0.5f;
     }
 }

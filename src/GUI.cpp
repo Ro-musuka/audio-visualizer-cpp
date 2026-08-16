@@ -88,6 +88,19 @@ void GUI::Draw()
     // サイズ・位置変更不可、titleBarなし
     ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
+    if (ImGui::Button("Play"))
+    {
+        mRenderer->GetApplication()->GetAudioPlayer()->IsPlaying();
+    }
+    // 同じ行に描画
+    ImGui::SameLine();
+
+    if (ImGui::Button("Pause"))
+    {
+        mRenderer->GetApplication()->GetAudioPlayer()->IsPaused();
+    }
+    ImGui::SameLine();
+
     mCursorPos = ImGui::GetCursorScreenPos();
 
     // ボタン判定
@@ -130,7 +143,6 @@ void GUI::Draw()
                           6.0f,
                           IM_COL32(255, 255, 255, 255));
 
-    // 同じ行に描画
     ImGui::SameLine();
     // 現在の再生時刻
     int duration = static_cast<int>(mDuration);

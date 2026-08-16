@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../external/kissfft/kiss_fft.h"
+#include "kiss_fft.h"
 
 #include <cstdlib>
 #include <vector>

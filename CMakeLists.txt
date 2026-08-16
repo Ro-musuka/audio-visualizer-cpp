@@ -12,6 +12,7 @@ find_package(OpenGL REQUIRED)
 file(GLOB SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/external/imgui/*.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends/*.cpp
     ${CMAKE_SOURCE_DIR}/external/kissfft/*.c
 )
 
@@ -20,6 +21,7 @@ add_executable(main ${SOURCES})
 target_include_directories(main PRIVATE 
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/imgui
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends
     ${CMAKE_SOURCE_DIR}/external/kissfft
 )
 
